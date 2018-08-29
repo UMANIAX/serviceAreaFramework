@@ -21,7 +21,7 @@ mongo = PyMongo(app)
 def hello_world():
 	return "Hello World,Pulkit and Saatvik here"
 
-@app.route('/ibm')
+@app.route('/ibm', methods=['GET'])
 @cross_origin()
 def tone_analysis():
 	def ibm_score(**kwargs):
@@ -70,6 +70,34 @@ def tone_analysis():
 	response.status_code = 200
 	
 	return response
+
+@app.route('/complaintsX',methods=['GET'])
+@cross_origin()
+def complaintAverage(**kwargs):
+    k = [] 
+    mycol4 = mongo.db.sentiments
+    mydoc4 = mycol4.find({})
+
+
+    i=0 
+
+    for x in mongo.db.sentiments.find({}).sort('date',-1):
+        j = {} 
+        print(x)
+        print(x['date'])
+        if i>6:
+            break
+        j["date"] = x['date']
+        j["score"] = x['averageComplaintSentiment']
+        k.append(j) 
+        i+=1
+
+    response = jsonify(k) 
+    response.status_code = 200
+
+    print(k ,"K is ")
+
+    return response
 
 
 if __name__ == "__main__":
