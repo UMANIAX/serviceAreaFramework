@@ -23,8 +23,7 @@ def hello_world():
 
 @app.route('/ibm', methods=['GET'])
 @cross_origin()
-def tone_analysis():
-	def ibm_score(**kwargs):
+def ibm_score(**kwargs):
 	tone_analyzer = ToneAnalyzerV3(
 	version='2017-09-21',
 	username="27edc35f-d026-4dd3-930e-bac1f6fe10ef",
@@ -99,6 +98,32 @@ def complaintAverage(**kwargs):
 
     return response
 
+@app.route('/sentimentX',methods=['GET'])
+@cross_origin()
+def sentimentAverage(**kwargs):
+
+	k = [] 
+	mycol6 = mongo.db.sentiments
+	mydoc6 = mycol6.find({})
+
+	i=0 
+
+
+
+	for x in mongo.db.sentiments.find({}).sort('date',-1):
+		j = {} 
+		if i>6:
+			break
+		j["date"] = x['date']
+		j["score"] = x['averageSentiment']
+		k.append(j)
+		i+=1  
+
+	response = jsonify(k) 
+	response.status_code = 200
+
+	
+	return response
 
 if __name__ == "__main__":
 	app.run()	
