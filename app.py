@@ -73,16 +73,13 @@ def ibm_score(**kwargs):
 @app.route('/complaintsX',methods=['GET'])
 @cross_origin()
 def complaintAverage(**kwargs):
-    k = [] 
-    mycol4 = mongo.db.sentiments
-    mydoc4 = mycol4.find({})
-
-
-    i=0 
-
-    for x in mongo.db.sentiments.find({}).sort('date',-1):
-        j = {} 
-        print(x)
+	k = [] 
+	mycol4 = mongo.db.sentiments
+	mydoc4 = mycol4.find({})
+	i=0 
+	for x in mongo.db.sentiments.find({}).sort('date',-1):
+    	j = {} 
+		print(x)
         print(x['date'])
         if i>6:
             break
@@ -101,14 +98,11 @@ def complaintAverage(**kwargs):
 @app.route('/sentimentX',methods=['GET'])
 @cross_origin()
 def sentimentAverage(**kwargs):
-
 	k = [] 
 	mycol6 = mongo.db.sentiments
 	mydoc6 = mycol6.find({})
 
 	i=0 
-
-
 
 	for x in mongo.db.sentiments.find({}).sort('date',-1):
 		j = {} 
