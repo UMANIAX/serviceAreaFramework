@@ -119,6 +119,73 @@ def sentimentAverage(**kwargs):
 	
 	return response
 
+
+@app.route('/reviewX',methods=['GET'])
+@cross_origin()
+def reviewAverage(**kwargs):
+
+	k = [] 
+	j = {} 
+
+	i=0 
+
+	for x in mongo.db.sentiments.find({}).sort('date',-1):
+		j = {} 
+		if i>6:
+			break
+		j["date"] = x['date']
+		j["score"] = x['averageReview']
+		k.append(j)
+		i+=1 
+	response = jsonify(k) 
+	response.status_code = 200
+
+
+	return response
+
+@app.route('/productViewed',methods=['GET'])
+@cross_origin()
+def productViewed(**kwargs):
+	mycol5 = mongo.db.customermls
+	mydoc5 = mycol5.find({})
+	l1 = 0
+	l2 = 0
+	l3 = 0
+	for x in mydoc5:
+		l1+=x['c1']
+		l2+=x['c2']
+		l3+=x['c3']
+	k = [{"l1":l1},{"l1":l2},{"l1":l3}]
+
+	response = jsonify(k) 
+	response.status_code = 200
+
+	print(k ,"K is ")
+
+	return response
+
+@app.route('/productBought',methods=['GET'])
+@cross_origin()
+def productBought(**kwargs):
+	mycol5 = mongo.db.customermls
+	mydoc5 = mycol5.find({})
+
+	l1 = 0
+	l2 = 0
+	l3 = 0
+	
+	for x in mydoc5:
+		l1+=x['p1']
+		l2+=x['p2']
+		l3+=x['p3']
+
+	k = [{"l1":l1},{"l1":l2},{"l1":l3}]
+	response = jsonify(k) 
+	response.status_code = 200
+
+	print(k ,"K is ")
+
+	return response	
 if __name__ == "__main__":
 	app.run()	
 
